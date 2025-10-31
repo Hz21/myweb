@@ -43,6 +43,17 @@
                 grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
                 gap: 1rem;
             }
+            .qrcode-wrapper {
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .qrcode-image {
+                max-width: 100%;
+                height: auto;
+                object-fit: contain;
+            }
             @media (max-width: 640px) {
                 .info-grid {
                     grid-template-columns: 1fr;
@@ -117,8 +128,12 @@
         <!-- 二维码验证区域 -->
         <div class="text-center mt-10 pt-6 border-t-2 border-gray-300">
             <p class="text-gray-600 mb-4">扫描二维码验证本证明真伪</p>
-            <div class="inline-block p-2 border border-gray-300 bg-white shadow-sm">
-                <img id="autoJumpQrcode" alt="扫描跳转验证页面" class="w-36 h-36">
+            <div class="inline-block p-2 border border-gray-300 bg-white shadow-sm qrcode-wrapper">
+                <!-- 替换为最新的Base64二维码链接 -->
+                <img id="autoJumpQrcode" 
+                     src="data:image/png;base64,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" 
+                     alt="扫描跳转验证页面" 
+                     class="qrcode-image w-40 h-40">
             </div>
             <p class="text-sm text-gray-500 mt-3">注：本证明为电子凭证，与纸质证明具有同等效力</p>
         </div>
@@ -131,305 +146,21 @@
     </div>
 
     <script>
-        // 生成当前页面URL的二维码
-        const currentPageUrl = window.location.href;
-        const qrcodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(currentPageUrl)}`;
-        document.getElementById('autoJumpQrcode').src = qrcodeUrl;
+        // 确保二维码图片加载完整
+        document.addEventListener('DOMContentLoaded', function() {
+            const qrcode = document.getElementById('autoJumpQrcode');
+            qrcode.onload = function() {
+                // 图片加载完成后调整尺寸
+                qrcode.style.maxWidth = '100%';
+                qrcode.style.height = 'auto';
+            };
+            
+            // 如果图片加载失败，尝试重新设置src
+            qrcode.onerror = function() {
+                console.log('二维码加载失败，尝试重新加载');
+                qrcode.src = qrcode.src; // 重新加载
+            };
+        });
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
