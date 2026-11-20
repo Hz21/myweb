@@ -5,188 +5,224 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>从业人员预防性健康检查合格证明</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#0052cc',
-                        secondary: '#d92121',
-                        neutral: '#333333',
-                        light: '#f5f5f5',
+                        primary: '#0e5fa8',
+                        primaryDeep: '#083d70',
+                        accent: '#c8102e',
+                        gold: '#d4a017',
                     },
                     fontFamily: {
                         sans: ['"Noto Sans SC"', '"Microsoft YaHei"', 'sans-serif'],
-                        serif: ['"Noto Serif SC"', 'serif'],
+                    },
+                    boxShadow: {
+                        card: '0 12px 36px rgba(8, 61, 112, 0.14)',
                     },
                 }
             }
         }
     </script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .text-shadow {
-                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-            }
-            .border-dashed-thick {
-                border-width: 2px;
-                border-style: dashed;
-            }
-            .certificate-container {
-                max-width: 800px;
-                margin: 0 auto;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            }
-            .info-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                gap: 1rem;
-            }
-            .qrcode-wrapper {
-                overflow: hidden;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .qrcode-image {
-                max-width: 100%;
-                height: auto;
-                object-fit: contain;
-            }
-            @media (max-width: 640px) {
-                .info-grid {
-                    grid-template-columns: 1fr;
-                }
-            }
+    <style>
+        body {
+            background:
+                radial-gradient(1000px 500px at 50% -10%, #dbeafe 0%, transparent 55%),
+                linear-gradient(160deg, #eef4fa 0%, #e3ecf5 100%);
+        }
+        .certificate {
+            position: relative;
+            border-radius: 18px;
+        }
+        .certificate::before {
+            content: '';
+            position: absolute;
+            inset: 12px;
+            border: 1px solid rgba(14, 95, 168, 0.28);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+        .watermark {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            font-weight: 800;
+            letter-spacing: 0.4em;
+            color: rgba(14, 95, 168, 0.045);
+            transform: rotate(-16deg);
+            pointer-events: none;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0 2.5rem;
+        }
+        @media (max-width: 640px) {
+            .info-grid { grid-template-columns: 1fr; }
+        }
+        .info-row {
+            display: flex;
+            align-items: baseline;
+            padding: 9px 0;
+            border-bottom: 1px dashed rgba(14, 95, 168, 0.18);
+        }
+        .info-label {
+            flex: 0 0 6rem;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        .info-value {
+            flex: 1;
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 0.98rem;
+            word-break: break-all;
+        }
+        /* 圆形钢印章 */
+        .stamp {
+            position: absolute;
+            right: -4px;
+            bottom: -6px;
+            width: 118px;
+            height: 118px;
+            border: 3px solid rgba(200, 16, 46, 0.75);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: rgba(200, 16, 46, 0.8);
+            transform: rotate(-14deg);
+            mix-blend-mode: multiply;
+            box-shadow: 0 0 0 2px rgba(200,16,46,0.15) inset;
+        }
+        .stamp::after {
+            content: '';
+            position: absolute;
+            inset: 5px;
+            border: 1px dashed rgba(200, 16, 46, 0.5);
+            border-radius: 50%;
+        }
+        .result-badge {
+            background: linear-gradient(135deg, #e6f9ee 0%, #d1f2de 100%);
+            border: 1px solid #86dfae;
+        }
+        @media print {
+            body { background: #fff; }
         }
     </style>
 </head>
-<body class="bg-gray-100 py-8 px-4 font-sans text-neutral">
-    <div class="certificate-container bg-white p-6 md:p-10 rounded-lg">
+<body class="min-h-screen py-8 px-4 font-sans text-slate-800 flex items-start justify-center">
+    <div class="certificate max-w-3xl w-full bg-white p-8 md:p-12 shadow-card mt-6">
+
         <!-- 标题区域 -->
-        <div class="text-center mb-8 pb-4 border-b-2 border-gray-300">
-            <h1 class="text-[clamp(1.8rem,5vw,2.5rem)] font-bold text-primary mb-2 text-shadow">从业人员预防性健康检查合格证明</h1>
-            <p class="text-lg md:text-xl text-gray-600">南京卫生健康委员会监制</p>
-        </div>
-        
-        <!-- 信息区域 -->
-        <div class="info-grid mb-8">
-            <div class="flex items-center">
-                <label class="w-24 font-semibold text-gray-700">姓名：</label>
-                <span class="flex-1 border-b border-gray-300 py-1 pl-2">李天乐</span>
+        <header class="relative text-center pb-6 border-b-2 border-slate-200">
+            <div class="flex items-center justify-center gap-3 text-xs text-primary tracking-[0.3em] mb-2">
+                <span class="inline-block w-10 h-px bg-primary/40"></span>
+                电子健康证明
+                <span class="inline-block w-10 h-px bg-primary/40"></span>
             </div>
-            <div class="flex items-center">
-                <label class="w-24 font-semibold text-gray-700">性别：</label>
-                <span class="flex-1 border-b border-gray-300 py-1 pl-2">男</span>
-            </div>
-            <div class="flex items-center">
-                <label class="w-24 font-semibold text-gray-700">年龄：</label>
-                <span class="flex-1 border-b border-gray-300 py-1 pl-2">21</span>
-            </div>
-            <div class="flex items-center">
-                <label class="w-24 font-semibold text-gray-700">证件号码：</label>
-                <span class="flex-1 border-b border-gray-300 py-1 pl-2">832779191
-                </span>
-            </div>
-            <div class="flex items-center">
-                <label class="w-24 font-semibold text-gray-700">从业类别：</label>
-                <span class="flex-1 border-b border-gray-300 py-1 pl-2">食品、饮用水、化妆品、公共场所</span>
-            </div>
-            <div class="flex items-center">
-                <label class="w-24 font-semibold text-gray-700">体检机构：</label>
-                <span class="flex-1 border-b border-gray-300 py-1 pl-2">南京疾病预防控制中心</span>
-            </div>
-            <div class="flex items-center">
-                <label class="w-24 font-semibold text-gray-700">发证日期：</label>
-                <span class="flex-1 border-b border-gray-300 py-1 pl-2">2026年11月20日</span>
-            </div>
-            <div class="flex items-center">
-                <label class="w-24 font-semibold text-gray-700">有效期至：</label>
-                <span class="flex-1 border-b border-gray-300 py-1 pl-2">2027年11月20日</span>
-            </div>
-        </div>
-        
-        <!-- 照片和体检结果区域 -->
-        <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-10">
-            <!-- 照片区域 -->
-            <div class="relative w-40 h-56 border-2 border-gray-400">
-                <img src="https://i.imgs.ovh/2026/11/20/c4255538c1214e27546a72f6579f7292.jpg" alt="体检人员照片" class="w-full h-full object-cover">
-                <!-- 印章 -->
-                <div class="absolute bottom-0 right-0 w-24 h-24 flex flex-col justify-center items-center text-secondary border-2 border-secondary rounded-full transform rotate-12">
-                    <div class="star text-lg">★</div>
-                    <div class="text-xs font-bold text-center">体检专用章</div>
+            <h1 class="text-2xl md:text-[2rem] font-bold text-primaryDeep tracking-wide">从业人员预防性健康检查合格证明</h1>
+            <p class="text-sm md:text-base text-slate-500 mt-3 flex items-center justify-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-gold inline-block"></span>
+                南京卫生健康委员会监制
+                <span class="w-1.5 h-1.5 rounded-full bg-gold inline-block"></span>
+            </p>
+        </header>
+
+        <div class="relative">
+            <div class="watermark">合格证明</div>
+
+            <!-- 信息区域 -->
+            <section class="info-grid mt-7">
+                <div class="info-row">
+                    <span class="info-label">姓　　名</span>
+                    <span class="info-value">李天乐</span>
                 </div>
-            </div>
-            
-            <!-- 体检结果 -->
-            <div class="text-center">
-                <p class="text-xl mb-2">体检结果：</p>
-                <p class="text-4xl font-bold text-green-600">合格</p>
-            </div>
-        </div>
-        
-        <!-- 二维码验证区域 -->
-        <div class="text-center mt-10 pt-6 border-t-2 border-gray-300">
-            <p class="text-gray-600 mb-4">扫描二维码验证本证明真伪</p>
-            <div class="inline-block p-2 border border-gray-300 bg-white shadow-sm qrcode-wrapper">
-                <!-- 替换为最新的Base64二维码链接 -->
-                <img id="autoJumpQrcode" 
-                     src="data:image/png;base64,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" 
-                     alt="扫描跳转验证页面" 
-                     class="qrcode-image w-40 h-40">
-            </div>
-            <p class="text-sm text-gray-500 mt-3">注：本证明为电子凭证，与纸质证明具有同等效力</p>
-        </div>
-        
-        <!-- 底部说明 -->
-        <div class="mt-8 text-center text-sm text-gray-500">
-            <p>咨询电话：025-12320</p>
-            <p class="mt-1">官方网站：www.whwjw.gov.cn</p>
+                <div class="info-row">
+                    <span class="info-label">性　　别</span>
+                    <span class="info-value">男</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">年　　龄</span>
+                    <span class="info-value">21</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">证 件 号</span>
+                    <span class="info-value tracking-wider">832779191</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">从业类别</span>
+                    <span class="info-value">食品、饮用水、化妆品、公共场所</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">体检机构</span>
+                    <span class="info-value">南京疾病预防控制中心</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">发证日期</span>
+                    <span class="info-value text-primary">2026年11月20日</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">有效期至</span>
+                    <span class="info-value text-primary">2027年11月20日</span>
+                </div>
+            </section>
+
+            <!-- 照片和体检结果区域 -->
+            <section class="flex flex-col md:flex-row items-center justify-center gap-10 mt-9">
+                <!-- 照片 + 印章 -->
+                <div class="relative shrink-0">
+                    <div class="w-36 h-48 rounded-md overflow-hidden border-2 border-slate-200 shadow-sm">
+                        <img src="https://i.imgs.ovh/2026/11/20/c4255538c1214e27546a72f6579f7292.jpg" alt="体检人员照片"
+                             class="w-full h-full object-cover">
+                    </div>
+                    <div class="stamp text-center">
+                        <div class="text-lg leading-none">★</div>
+                        <div class="text-xs font-bold mt-1.5 leading-tight">体检专用章</div>
+                    </div>
+                </div>
+
+                <!-- 体检结果 -->
+                <div class="text-center">
+                    <p class="text-sm text-slate-500 tracking-[0.4em] mb-3">体 检 结 果</p>
+                    <div class="result-badge rounded-2xl px-10 py-6">
+                        <p class="text-4xl md:text-5xl font-bold text-green-600">合　格</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 二维码验证区域 -->
+            <section class="text-center mt-10 pt-6 border-t-2 border-slate-200">
+                <p class="text-sm text-slate-600 mb-4 flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3 8V5a2 2 0 012-2h3m8 0h3a2 2 0 012 2v3m0 8v3a2 2 0 01-2 2h-3M3 16v3a2 2 0 002 2h3"/>
+                    </svg>
+                    扫描二维码验证本证明真伪
+                </p>
+                <div class="inline-block p-2.5 border border-slate-200 rounded-lg bg-white shadow-sm">
+                    <img src="data:image/png;base64,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"
+                         alt="扫描跳转验证页面" class="w-36 h-36">
+                </div>
+                <p class="text-xs text-slate-400 mt-3">注：本证明为电子凭证，与纸质证明具有同等效力</p>
+            </section>
+
+            <!-- 底部说明 -->
+            <footer class="mt-8 text-center text-xs text-slate-500 leading-relaxed">
+                <p>
+                    咨询电话：<span class="text-primary font-medium">025-12320</span>
+                    <span class="mx-2 text-slate-300">|</span>
+                    官方网站：<span class="text-primary font-medium">www.whwjw.gov.cn</span>
+                </p>
+            </footer>
         </div>
     </div>
-
-    <script>
-        // 确保二维码图片加载完整
-        document.addEventListener('DOMContentLoaded', function() {
-            const qrcode = document.getElementById('autoJumpQrcode');
-            qrcode.onload = function() {
-                // 图片加载完成后调整尺寸
-                qrcode.style.maxWidth = '100%';
-                qrcode.style.height = 'auto';
-            };
-            
-            // 如果图片加载失败，尝试重新设置src
-            qrcode.onerror = function() {
-                console.log('二维码加载失败，尝试重新加载');
-                qrcode.src = qrcode.src; // 重新加载
-            };
-        });
-    </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
